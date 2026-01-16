@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Login | MyFlohMarkt</title>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col justify-between">
+
+  <main class="max-w-md mx-auto w-full p-8 pt-20">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-black text-emerald-600 mb-2 italic">MFM</h1>
+      <p class="text-gray-500 font-medium">Willkommen zurück bei MyFlohMarkt</p>
+    </div>
+
+    <div class="space-y-4">
+      <button onclick="mockLogin()" class="w-full bg-white border border-gray-200 p-4 rounded-2xl font-bold flex items-center justify-center shadow-sm active:scale-95 transition-transform">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5 mr-3">
+        Mit Google anmelden
+      </button>
+
+      <div class="relative flex py-5 items-center">
+        <div class="flex-grow border-t border-gray-200"></div>
+        <span class="flex-shrink mx-4 text-gray-400 text-xs uppercase font-bold">oder</span>
+        <div class="flex-grow border-t border-gray-200"></div>
+      </div>
+
+      <input type="email" placeholder="E-Mail Adresse" class="w-full p-4 rounded-2xl border-0 bg-white shadow-sm outline-none focus:ring-2 focus:ring-emerald-500">
+      <input type="password" placeholder="Passwort" class="w-full p-4 rounded-2xl border-0 bg-white shadow-sm outline-none focus:ring-2 focus:ring-emerald-500">
+      
+      <button onclick="mockLogin()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-100 uppercase tracking-wider">
+        Einloggen
+      </button>
+    </div>
