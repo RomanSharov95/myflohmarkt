@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <title>MyFlohMarkt | MFM</title>
   <style>
     .hidden { display: none; }
@@ -12,156 +13,153 @@
       to { transform: translateY(0); opacity: 1; }
     }
     .animate-popup { animation: slideIn 0.3s ease-out; }
-    /* Скрытие скроллбара для чистого дизайна */
+    /* Плавный скролл */
+    html { scroll-behavior: smooth; }
+    /* Скрытие стандартного скроллбара для красоты */
     ::-webkit-scrollbar { width: 0px; background: transparent; }
   </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 pb-28">
 
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-3">
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-4 py-3 shadow-sm">
     <div class="max-w-md mx-auto flex justify-between items-center">
       <h1 class="text-2xl font-bold text-emerald-600 tracking-tight italic">MyFlohMarkt<span class="text-orange-500 not-italic font-black">.MFM</span></h1>
-      <a href="login.html" class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold">Login</a>
+      <div class="flex space-x-2">
+        <a href="register.html" class="bg-emerald-600 text-white px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-100 transition-transform active:scale-95">Registrieren</a>
+      </div>
     </div>
   </header>
 
   <main class="max-w-md mx-auto">
-    <section class="p-6 bg-emerald-600 text-white rounded-b-[2.5rem] shadow-lg mb-6">
+    <section class="p-6 bg-emerald-600 text-white rounded-b-[2.5rem] shadow-xl mb-8">
       <div class="flex space-x-2 mb-6 bg-white/20 p-1 rounded-2xl border border-white/10">
-        <button id="tabMaerkte" onclick="switchTab('maerkte')" class="flex-1 py-2 rounded-xl font-bold text-sm bg-white text-emerald-700 shadow-sm transition-all">Märkte</button>
-        <button id="tabProdukte" onclick="switchTab('produkte')" class="flex-1 py-2 rounded-xl font-bold text-sm text-white transition-all">Produkte</button>
+        <button id="tabMaerkte" onclick="switchTab('maerkte')" class="flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest bg-white text-emerald-700 shadow-sm transition-all">Märkte</button>
+        <button id="tabProdukte" onclick="switchTab('produkte')" class="flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest text-white transition-all">Produkte</button>
       </div>
-      <input type="text" id="searchInput" placeholder="Stadt oder PLZ suchen..." class="w-full p-4 rounded-2xl text-gray-800 outline-none border-none focus:ring-4 focus:ring-orange-400 transition-all shadow-lg">
+      <div class="relative">
+        <input type="text" id="searchInput" placeholder="Stadt oder PLZ suchen..." class="w-full p-4 rounded-2xl text-gray-800 outline-none border-none focus:ring-4 focus:ring-orange-400 transition-all shadow-lg placeholder:text-gray-400">
+        <div class="absolute right-4 top-4 text-emerald-600">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+      </div>
     </section>
 
     <section id="sectionMaerkte" class="px-4 space-y-6">
-      <h3 class="text-lg font-black uppercase tracking-tighter italic px-2">📍 Märkte in deiner Nähe</h3>
+      <div class="flex justify-between items-end px-2 mb-2">
+        <h3 class="text-xl font-black uppercase tracking-tighter italic">📍 Flohmärkte in der Nähe</h3>
+        <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Alle ansehen</span>
+      </div>
       
-      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden transition-transform active:scale-[0.98]">
-        <div class="h-44 bg-gray-200"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=500" class="w-full h-full object-cover"></div>
+      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all active:scale-[0.98]">
+        <div class="h-48 bg-gray-200"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=600" class="w-full h-full object-cover"></div>
         <div class="p-6">
           <div class="flex justify-between items-start mb-2">
-            <h4 class="text-xl font-black">Mauerpark Flohmarkt</h4>
-            <span class="text-emerald-600 font-bold text-right text-sm">SO, 24. Mai</span>
+            <h4 class="text-xl font-black tracking-tight">Mauerpark Flohmarkt</h4>
+            <span class="bg-orange-100 text-orange-600 text-[10px] font-black px-2 py-1 rounded-lg uppercase">Morgen</span>
           </div>
           <p class="text-gray-400 text-sm mb-4">Bernauer Str. 63, 13355 Berlin</p>
-          <div class="bg-orange-50 text-orange-700 text-[10px] font-black uppercase px-3 py-1 rounded-lg inline-block mb-4">Noch 12 Plätze frei</div>
-          <button class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-100">Standplatz buchen</button>
+          <button class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-sm shadow-lg shadow-emerald-100 transition-all active:bg-emerald-700">Stand buchen</button>
         </div>
       </div>
 
-      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden transition-transform active:scale-[0.98]">
-        <div class="h-44 bg-gray-200"><img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=500" class="w-full h-full object-cover"></div>
+      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all active:scale-[0.98]">
+        <div class="h-48 bg-gray-200"><img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=600" class="w-full h-full object-cover"></div>
         <div class="p-6">
           <div class="flex justify-between items-start mb-2">
-            <h4 class="text-xl font-black">Hinterhof-Flohmarkt</h4>
-            <span class="text-emerald-600 font-bold text-right text-sm">SA, 30. Mai</span>
+            <h4 class="text-xl font-black tracking-tight">Kiez-Trödel Neukölln</h4>
+            <span class="bg-emerald-100 text-emerald-600 text-[10px] font-black px-2 py-1 rounded-lg uppercase">Samstag</span>
           </div>
-          <p class="text-gray-400 text-sm mb-4">Neukölln, Berlin</p>
-          <div class="bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase px-3 py-1 rounded-lg inline-block mb-4">Nachbarschafts-Event</div>
-          <button class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-100">Standplatz buchen</button>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden transition-transform active:scale-[0.98]">
-        <div class="h-44 bg-gray-200"><img src="https://images.unsplash.com/photo-1506102383123-c8ef1e872756?q=80&w=500" class="w-full h-full object-cover"></div>
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-2">
-            <h4 class="text-xl font-black">Nachtflohmarkt MFM</h4>
-            <span class="text-emerald-600 font-bold text-right text-sm">FR, 05. Juni</span>
-          </div>
-          <p class="text-gray-400 text-sm mb-4">Arena Berlin, Treptow</p>
-          <div class="bg-orange-50 text-orange-700 text-[10px] font-black uppercase px-3 py-1 rounded-lg inline-block mb-4">Musik & Drinks</div>
-          <button class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-100">Standplatz buchen</button>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden transition-transform active:scale-[0.98]">
-        <div class="h-44 bg-gray-200"><img src="https://images.unsplash.com/photo-1473177104440-982194c99b94?q=80&w=500" class="w-full h-full object-cover"></div>
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-2">
-            <h4 class="text-xl font-black">Kinder-Flohmarkt</h4>
-            <span class="text-emerald-600 font-bold text-right text-sm">SO, 07. Juni</span>
-          </div>
-          <p class="text-gray-400 text-sm mb-4">Grundschule Mitte, Berlin</p>
-          <div class="bg-orange-50 text-orange-700 text-[10px] font-black uppercase px-3 py-1 rounded-lg inline-block mb-4">Nur für Familien</div>
-          <button class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-emerald-100 text-sm uppercase tracking-widest">Sichern</button>
+          <p class="text-gray-400 text-sm mb-4">Maybachufer, Berlin</p>
+          <button class="w-full border-2 border-emerald-600 text-emerald-600 py-4 rounded-2xl font-black uppercase tracking-widest text-sm transition-all active:bg-emerald-50">Details</button>
         </div>
       </div>
     </section>
 
-    <section id="sectionProdukte" class="px-4 hidden space-y-6">
-      <h3 class="text-lg font-black uppercase tracking-tighter mb-4 italic px-2">🛍️ Beliebte Artikel</h3>
+    <section id="sectionProdukte" class="px-4 hidden">
+      <div class="flex justify-between items-end px-2 mb-4">
+        <h3 class="text-xl font-black uppercase tracking-tighter italic">🛍️ Frisch Inseriert</h3>
+        <select class="text-[10px] font-black uppercase tracking-widest bg-transparent text-emerald-600 border-none outline-none">
+          <option>Neueste</option>
+          <option>Günstigste</option>
+        </select>
+      </div>
       
       <div class="grid grid-cols-2 gap-4">
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="relative h-40"><img src="https://images.unsplash.com/photo-1531944459412-80f2444b856c?q=80&w=400" class="w-full h-full object-cover"></div>
+        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+          <div class="relative h-44"><img src="https://images.unsplash.com/photo-1531944459412-80f2444b856c?q=80&w=400" class="w-full h-full object-cover"></div>
           <div class="p-4">
-            <span class="text-emerald-600 font-black">45 €</span>
-            <h4 class="text-xs font-bold truncate">Vintage Kamera 1970</h4>
-            <p class="text-[10px] text-gray-400">Berlin • Heute</p>
+            <p class="text-emerald-600 font-black text-lg mb-1">45 €</p>
+            <h4 class="text-xs font-bold text-gray-800 truncate uppercase">Vintage Kamera</h4>
+            <p class="text-[9px] text-gray-400 font-bold uppercase mt-1">Berlin • 2km</p>
           </div>
         </div>
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="relative h-40"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400" class="w-full h-full object-cover"></div>
+        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+          <div class="relative h-44"><img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=400" class="w-full h-full object-cover"></div>
           <div class="p-4">
-            <span class="text-emerald-600 font-black">89 €</span>
-            <h4 class="text-xs font-bold truncate">Smart Watch White</h4>
-            <p class="text-[10px] text-gray-400">Hamburg • Gestern</p>
-          </div>
-        </div>
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="relative h-40"><img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=400" class="w-full h-full object-cover"></div>
-          <div class="p-4">
-            <span class="text-emerald-600 font-black">15 €</span>
-            <h4 class="text-xs font-bold truncate">Denim Jacke Jeans</h4>
-            <p class="text-[10px] text-gray-400">Köln • Vor 2h</p>
-          </div>
-        </div>
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="relative h-40"><img src="https://images.unsplash.com/photo-1581087771527-42467b9de33b?q=80&w=400" class="w-full h-full object-cover"></div>
-          <div class="p-4">
-            <span class="text-emerald-600 font-black">120 €</span>
-            <h4 class="text-xs font-bold truncate">Retro Rennrad</h4>
-            <p class="text-[10px] text-gray-400">München • Gestern</p>
+            <p class="text-emerald-600 font-black text-lg mb-1">12 €</p>
+            <h4 class="text-xs font-bold text-gray-800 truncate uppercase">Denim Jacke</h4>
+            <p class="text-[9px] text-gray-400 font-bold uppercase mt-1">München • Online</p>
           </div>
         </div>
       </div>
     </section>
+
+    <footer class="mt-16 px-8 py-12 border-t border-gray-100 text-center">
+      <div class="flex justify-center space-x-6 mb-6">
+        <a href="legal.html" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-emerald-600 transition-colors">Impressum</a>
+        <a href="legal.html" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-emerald-600 transition-colors">Datenschutz</a>
+      </div>
+      <p class="text-[10px] text-gray-300 font-bold italic leading-relaxed">
+        Dies ist ein Prototyp zu Testzwecken (Beta). <br>
+        Keine kommerzielle Nutzung.
+      </p>
+    </footer>
   </main>
 
-  <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t py-3 px-10 shadow-2xl max-w-md mx-auto flex justify-between items-center z-40">
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t py-3 px-10 shadow-2xl max-w-md mx-auto flex justify-between items-center z-40">
     <a href="index.html" class="text-emerald-600 flex flex-col items-center">
       <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-      <span class="text-[8px] font-bold uppercase mt-1">Home</span>
+      <span class="text-[8px] font-black uppercase mt-1">Home</span>
     </a>
+    
     <button onclick="togglePlusMenu()" class="bg-orange-500 text-white p-4 rounded-full shadow-xl -mt-12 border-4 border-gray-50 active:scale-90 transition-all z-50">
       <svg id="plusIcon" class="h-8 w-8 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" /></svg>
     </button>
+
     <a href="profile.html" class="text-gray-400 flex flex-col items-center">
       <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-      <span class="text-[8px] font-bold uppercase mt-1">Profil</span>
+      <span class="text-[8px] font-black uppercase mt-1">Profil</span>
     </a>
   </nav>
 
   <div id="plusMenu" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[45] flex items-end justify-center p-4">
     <div class="max-w-md w-full animate-popup">
       <div class="bg-white rounded-[2.5rem] p-6 shadow-2xl space-y-3 mb-24">
-        <h3 class="text-center font-black uppercase text-gray-400 text-xs tracking-widest mb-4 italic italic">MyFlohMarkt (MFM)</h3>
-        <a href="create-event.html" class="flex items-center p-5 bg-emerald-50 rounded-[1.5rem] border border-emerald-100 active:scale-[0.97] transition-all">
+        <h3 class="text-center font-black uppercase text-gray-400 text-[10px] tracking-[0.3em] mb-4 italic">Auswahl treffen</h3>
+        
+        <a href="create-event.html" class="flex items-center p-5 bg-emerald-50 rounded-[1.5rem] border border-emerald-100 active:scale-[0.98] transition-all">
           <div class="bg-emerald-600 text-white p-3 rounded-xl mr-4 text-xl">📍</div>
-          <div class="text-left"><span class="block font-black text-emerald-900 uppercase text-sm">Markt organisieren</span><span class="text-[10px] text-emerald-600 font-bold tracking-tight">Neuen Termin erstellen</span></div>
+          <div class="text-left">
+            <span class="block font-black text-emerald-900 uppercase text-xs">Markt / Event organisieren</span>
+            <span class="text-[9px] text-emerald-600 font-bold tracking-tight">Einen neuen Termin für alle erstellen</span>
+          </div>
         </a>
-        <a href="create-item.html" class="flex items-center p-5 bg-orange-50 rounded-[1.5rem] border border-orange-100 active:scale-[0.97] transition-all">
+
+        <a href="create-item.html" class="flex items-center p-5 bg-orange-50 rounded-[1.5rem] border border-orange-100 active:scale-[0.98] transition-all">
           <div class="bg-orange-500 text-white p-3 rounded-xl mr-4 text-xl">🛍️</div>
-          <div class="text-left"><span class="block font-black text-orange-900 uppercase text-sm">Produkt inserieren</span><span class="text-[10px] text-orange-600 font-bold tracking-tight">Einzelstück online verkaufen</span></div>
+          <div class="text-left">
+            <span class="block font-black text-orange-900 uppercase text-xs">Produkt inserieren</span>
+            <span class="text-[9px] text-orange-600 font-bold tracking-tight">Einzelnes Teil zum Verkauf anbieten</span>
+          </div>
         </a>
-        <button onclick="togglePlusMenu()" class="w-full py-4 text-gray-400 font-black text-xs uppercase tracking-[0.2em] mt-2">Abbrechen</button>
+
+        <button onclick="togglePlusMenu()" class="w-full py-4 text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] mt-2">Abbrechen</button>
       </div>
     </div>
   </div>
 
   <script>
+    // Tab-Switching Logic
     function switchTab(type) {
       const tabMaerkte = document.getElementById('tabMaerkte');
       const tabProdukte = document.getElementById('tabProdukte');
@@ -170,20 +168,21 @@
       const searchInput = document.getElementById('searchInput');
 
       if (type === 'maerkte') {
-        tabMaerkte.className = "flex-1 py-2 rounded-xl font-bold text-sm bg-white text-emerald-700 shadow-sm transition-all";
-        tabProdukte.className = "flex-1 py-2 rounded-xl font-bold text-sm text-white transition-all";
+        tabMaerkte.className = "flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest bg-white text-emerald-700 shadow-sm transition-all";
+        tabProdukte.className = "flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest text-white transition-all";
         sectionMaerkte.classList.remove('hidden');
         sectionProdukte.classList.add('hidden');
         searchInput.placeholder = "Stadt oder PLZ suchen...";
       } else {
-        tabProdukte.className = "flex-1 py-2 rounded-xl font-bold text-sm bg-white text-emerald-700 shadow-sm transition-all";
-        tabMaerkte.className = "flex-1 py-2 rounded-xl font-bold text-sm text-white transition-all";
+        tabProdukte.className = "flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest bg-white text-emerald-700 shadow-sm transition-all";
+        tabMaerkte.className = "flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest text-white transition-all";
         sectionProdukte.classList.remove('hidden');
         sectionMaerkte.classList.add('hidden');
         searchInput.placeholder = "Produkte, Marken suchen...";
       }
     }
 
+    // Modal Logic
     function togglePlusMenu() {
       const menu = document.getElementById('plusMenu');
       const icon = document.getElementById('plusIcon');
