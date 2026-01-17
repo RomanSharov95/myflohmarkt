@@ -45,42 +45,66 @@
     </div>
   </div>
 
-  <script>
+<script>
+    // Твои данные из Supabase
+    const SUPABASE_URL = 'https://kzbwncclswagwshyfdlv.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_eqByuGyYPy0qr1z1yO4X6Q_YwrkV5g5';
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     const form = document.getElementById('regForm');
     const submitBtn = document.getElementById('submitBtn');
     const inputs = form.querySelectorAll('input[required]');
 
-    // Функция проверки полей (немецкая логика)
+    // Логика кнопки (уже на немецком)
     function checkInputs() {
       let allFilled = true;
       inputs.forEach(input => {
-        if (input.value.trim() === '') {
-          allFilled = false;
-        }
+        if (input.value.trim() === '') allFilled = false;
       });
-
       if (allFilled) {
         submitBtn.disabled = false;
-        submitBtn.classList.remove('bg-gray-300', 'cursor-not-allowed');
-        submitBtn.classList.add('bg-emerald-600', 'shadow-xl', 'shadow-emerald-100', 'active:scale-[0.98]', 'cursor-pointer');
+        submitBtn.classList.replace('bg-gray-300', 'bg-emerald-600');
+        submitBtn.classList.add('shadow-xl', 'shadow-emerald-100', 'cursor-pointer');
       } else {
         submitBtn.disabled = true;
-        submitBtn.classList.add('bg-gray-300', 'cursor-not-allowed');
-        submitBtn.classList.remove('bg-emerald-600', 'shadow-xl', 'shadow-emerald-100', 'active:scale-[0.98]', 'cursor-pointer');
+        submitBtn.classList.replace('bg-emerald-600', 'bg-gray-300');
+        submitBtn.classList.remove('shadow-xl', 'shadow-emerald-100', 'cursor-pointer');
       }
     }
 
-    // Следим за вводом данных
-    inputs.forEach(input => {
-      input.addEventListener('input', checkInputs);
-    });
+    inputs.forEach(input => input.addEventListener('input', checkInputs));
 
-    // Обработка отправки формы
+    // Отправка данных в таблицу profiles
     form.onsubmit = async (e) => {
       e.preventDefault();
-      // Немецкое уведомление
-      alert('Vielen Dank! Deine Daten sind bereit für die Übertragung an Supabase.');
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Сначала регистрируем пользователя в системе Supabase Auth
+      const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+      });
+
+      if (authError) {
+        alert("Fehler: " + authError.message);
+      } else {
+        // Затем записываем его имя в нашу таблицу profiles
+        const { error: dbError } = await supabaseClient
+          .from('profiles')
+          .insert([{ full_name: name, email: email }]);
+
+        if (dbError) {
+          alert("Datenbank-Fehler: " + dbError.message);
+        } else {
+          alert("Vielen Dank! Dein Account wurde erstellt. Bitte prüfe deine E-Mails zur Bestätigung.");
+          window.location.href = "index.html";
+        }
+      }
     };
-  </script>
+</script>
 </body>
 </html>
