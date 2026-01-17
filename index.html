@@ -13,21 +13,22 @@
       to { transform: translateY(0); opacity: 1; }
     }
     .animate-popup { animation: slideIn 0.3s ease-out; }
-    /* Плавный скролл */
     html { scroll-behavior: smooth; }
-    /* Скрытие стандартного скроллбара для красоты */
     ::-webkit-scrollbar { width: 0px; background: transparent; }
   </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 pb-28">
-<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-4 py-3 shadow-sm">
-  <div class="max-w-md mx-auto flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-emerald-600 tracking-tight italic">MyFlohMarkt<span class="text-orange-500 not-italic font-black">.MFM</span></h1>
-    <div class="flex space-x-2">
-      <a href="login.html" class="bg-emerald-600 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-100 transition-transform active:scale-95">Login</a>
+
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-4 py-3 shadow-sm">
+    <div class="max-w-md mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-emerald-600 tracking-tight italic">MyFlohMarkt<span class="text-orange-500 not-italic font-black">.MFM</span></h1>
+      
+      <div id="authSection" class="flex space-x-2">
+        <a href="login.html" class="bg-emerald-600 text-white px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-100 transition-transform active:scale-95">Login</a>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
+
   <main class="max-w-md mx-auto">
     <section class="p-6 bg-emerald-600 text-white rounded-b-[2.5rem] shadow-xl mb-8">
       <div class="flex space-x-2 mb-6 bg-white/20 p-1 rounded-2xl border border-white/10">
@@ -36,81 +37,40 @@
       </div>
       <div class="relative">
         <input type="text" id="searchInput" placeholder="Stadt oder PLZ suchen..." class="w-full p-4 rounded-2xl text-gray-800 outline-none border-none focus:ring-4 focus:ring-orange-400 transition-all shadow-lg placeholder:text-gray-400">
-        <div class="absolute right-4 top-4 text-emerald-600">
-          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        </div>
       </div>
     </section>
 
     <section id="sectionMaerkte" class="px-4 space-y-6">
-      <div class="flex justify-between items-end px-2 mb-2">
-        <h3 class="text-xl font-black uppercase tracking-tighter italic">📍 Flohmärkte in der Nähe</h3>
-        <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Alle ansehen</span>
-      </div>
-      
-      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all active:scale-[0.98]">
+      <h3 class="text-xl font-black uppercase tracking-tighter italic px-2">📍 Events in der Nähe</h3>
+      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
         <div class="h-48 bg-gray-200"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=600" class="w-full h-full object-cover"></div>
         <div class="p-6">
-          <div class="flex justify-between items-start mb-2">
-            <h4 class="text-xl font-black tracking-tight">Mauerpark Flohmarkt</h4>
-            <span class="bg-orange-100 text-orange-600 text-[10px] font-black px-2 py-1 rounded-lg uppercase">Morgen</span>
-          </div>
-          <p class="text-gray-400 text-sm mb-4">Bernauer Str. 63, 13355 Berlin</p>
-          <button class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-sm shadow-lg shadow-emerald-100 transition-all active:bg-emerald-700">Stand buchen</button>
-        </div>
-      </div>
-
-      <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden transition-all active:scale-[0.98]">
-        <div class="h-48 bg-gray-200"><img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?q=80&w=600" class="w-full h-full object-cover"></div>
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-2">
-            <h4 class="text-xl font-black tracking-tight">Kiez-Trödel Neukölln</h4>
-            <span class="bg-emerald-100 text-emerald-600 text-[10px] font-black px-2 py-1 rounded-lg uppercase">Samstag</span>
-          </div>
-          <p class="text-gray-400 text-sm mb-4">Maybachufer, Berlin</p>
-          <button class="w-full border-2 border-emerald-600 text-emerald-600 py-4 rounded-2xl font-black uppercase tracking-widest text-sm transition-all active:bg-emerald-50">Details</button>
+          <h4 class="text-xl font-black tracking-tight">Mauerpark Flohmarkt</h4>
+          <p class="text-gray-400 text-sm mb-4">Bernauer Str. 63, Berlin</p>
+          <button class="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black uppercase tracking-widest text-xs">Stand buchen</button>
         </div>
       </div>
     </section>
 
     <section id="sectionProdukte" class="px-4 hidden">
-      <div class="flex justify-between items-end px-2 mb-4">
-        <h3 class="text-xl font-black uppercase tracking-tighter italic">🛍️ Frisch Inseriert</h3>
-        <select class="text-[10px] font-black uppercase tracking-widest bg-transparent text-emerald-600 border-none outline-none">
-          <option>Neueste</option>
-          <option>Günstigste</option>
-        </select>
-      </div>
-      
+      <h3 class="text-xl font-black uppercase tracking-tighter italic px-2 mb-4">🛍️ Frisch Inseriert</h3>
       <div class="grid grid-cols-2 gap-4">
         <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
-          <div class="relative h-44"><img src="https://images.unsplash.com/photo-1531944459412-80f2444b856c?q=80&w=400" class="w-full h-full object-cover"></div>
+          <div class="h-40 bg-gray-100"><img src="https://images.unsplash.com/photo-1531944459412-80f2444b856c?q=80&w=400" class="w-full h-full object-cover"></div>
           <div class="p-4">
-            <p class="text-emerald-600 font-black text-lg mb-1">45 €</p>
+            <p class="text-emerald-600 font-black text-lg">45 €</p>
             <h4 class="text-xs font-bold text-gray-800 truncate uppercase">Vintage Kamera</h4>
-            <p class="text-[9px] text-gray-400 font-bold uppercase mt-1">Berlin • 2km</p>
-          </div>
-        </div>
-        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
-          <div class="relative h-44"><img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=400" class="w-full h-full object-cover"></div>
-          <div class="p-4">
-            <p class="text-emerald-600 font-black text-lg mb-1">12 €</p>
-            <h4 class="text-xs font-bold text-gray-800 truncate uppercase">Denim Jacke</h4>
-            <p class="text-[9px] text-gray-400 font-bold uppercase mt-1">München • Online</p>
           </div>
         </div>
       </div>
     </section>
 
-    <footer class="mt-16 px-8 py-12 border-t border-gray-100 text-center">
-      <div class="flex justify-center space-x-6 mb-6">
-        <a href="legal.html" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-emerald-600 transition-colors">Impressum</a>
-        <a href="legal.html" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-emerald-600 transition-colors">Datenschutz</a>
+    <footer class="mt-16 px-8 py-12 text-center border-t border-gray-100">
+      <div class="flex justify-center space-x-6 mb-4">
+        <a href="legal.html" class="text-[10px] font-black uppercase text-gray-400">Impressum</a>
+        <a href="legal.html" class="text-[10px] font-black uppercase text-gray-400">Datenschutz</a>
       </div>
-      <p class="text-[10px] text-gray-300 font-bold italic leading-relaxed">
-        Dies ist ein Prototyp zu Testzwecken (Beta). <br>
-        Keine kommerzielle Nutzung.
-      </p>
+      <p class="text-[9px] text-gray-300 font-bold italic italic">© 2026 MyFlohMarkt (MFM) - Beta</p>
     </footer>
   </main>
 
@@ -121,7 +81,7 @@
     </a>
     
     <button onclick="togglePlusMenu()" class="bg-orange-500 text-white p-4 rounded-full shadow-xl -mt-12 border-4 border-gray-50 active:scale-90 transition-all z-50">
-      <svg id="plusIcon" class="h-8 w-8 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" /></svg>
+      <svg id="plusIcon" class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" /></svg>
     </button>
 
     <a href="profile.html" class="text-gray-400 flex flex-col items-center">
@@ -131,67 +91,74 @@
   </nav>
 
   <div id="plusMenu" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[45] flex items-end justify-center p-4">
-    <div class="max-w-md w-full animate-popup">
-      <div class="bg-white rounded-[2.5rem] p-6 shadow-2xl space-y-3 mb-24">
-        <h3 class="text-center font-black uppercase text-gray-400 text-[10px] tracking-[0.3em] mb-4 italic">Auswahl treffen</h3>
-        
-        <a href="create-event.html" class="flex items-center p-5 bg-emerald-50 rounded-[1.5rem] border border-emerald-100 active:scale-[0.98] transition-all">
-          <div class="bg-emerald-600 text-white p-3 rounded-xl mr-4 text-xl">📍</div>
-          <div class="text-left">
-            <span class="block font-black text-emerald-900 uppercase text-xs">Markt / Event organisieren</span>
-            <span class="text-[9px] text-emerald-600 font-bold tracking-tight">Einen neuen Termin für alle erstellen</span>
-          </div>
-        </a>
-
-        <a href="create-item.html" class="flex items-center p-5 bg-orange-50 rounded-[1.5rem] border border-orange-100 active:scale-[0.98] transition-all">
-          <div class="bg-orange-500 text-white p-3 rounded-xl mr-4 text-xl">🛍️</div>
-          <div class="text-left">
-            <span class="block font-black text-orange-900 uppercase text-xs">Produkt inserieren</span>
-            <span class="text-[9px] text-orange-600 font-bold tracking-tight">Einzelnes Teil zum Verkauf anbieten</span>
-          </div>
-        </a>
-
-        <button onclick="togglePlusMenu()" class="w-full py-4 text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] mt-2">Abbrechen</button>
-      </div>
+    <div class="max-w-md w-full animate-popup mb-24 space-y-3">
+        <a href="create-event.html" class="block p-5 bg-white rounded-[1.5rem] font-black uppercase text-xs text-emerald-700 text-center">Markt organisieren</a>
+        <a href="create-item.html" class="block p-5 bg-white rounded-[1.5rem] font-black uppercase text-xs text-orange-600 text-center">Produkt verkaufen</a>
+        <button onclick="togglePlusMenu()" class="w-full py-4 text-white font-black text-[10px] uppercase">Schließen</button>
     </div>
   </div>
 
   <script>
-    // Tab-Switching Logic
+    // --- SUPABASE CONFIG ---
+    const SUPABASE_URL = 'ТВОЙ_URL';
+    const SUPABASE_ANON_KEY = 'ТВОЙ_KEY';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // --- LOGIC: AUTH CHECK ---
+    async function checkUserSession() {
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      const authSection = document.getElementById('authSection');
+
+      if (user) {
+        // Получаем имя из таблицы profiles
+        const { data: profile } = await supabaseClient
+          .from('profiles')
+          .select('full_name')
+          .eq('email', user.email)
+          .single();
+
+        let displayName = profile?.full_name || user.email.split('@')[0];
+        
+        // Ограничение до 12 символов
+        if (displayName.length > 12) {
+          displayName = displayName.substring(0, 12) + '...';
+        }
+
+        authSection.innerHTML = `
+          <a href="profile.html" class="flex items-center space-x-2 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100 transition-transform active:scale-95">
+            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <span class="text-[10px] font-black text-emerald-700 uppercase tracking-wider">${displayName}</span>
+          </a>
+        `;
+      }
+    }
+
+    // --- LOGIC: TABS & MENU ---
     function switchTab(type) {
-      const tabMaerkte = document.getElementById('tabMaerkte');
-      const tabProdukte = document.getElementById('tabProdukte');
-      const sectionMaerkte = document.getElementById('sectionMaerkte');
-      const sectionProdukte = document.getElementById('sectionProdukte');
-      const searchInput = document.getElementById('searchInput');
+      const tabM = document.getElementById('tabMaerkte');
+      const tabP = document.getElementById('tabProdukte');
+      const secM = document.getElementById('sectionMaerkte');
+      const secP = document.getElementById('sectionProdukte');
 
       if (type === 'maerkte') {
-        tabMaerkte.className = "flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest bg-white text-emerald-700 shadow-sm transition-all";
-        tabProdukte.className = "flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest text-white transition-all";
-        sectionMaerkte.classList.remove('hidden');
-        sectionProdukte.classList.add('hidden');
-        searchInput.placeholder = "Stadt oder PLZ suchen...";
+        tabM.classList.add('bg-white', 'text-emerald-700');
+        tabP.classList.remove('bg-white', 'text-emerald-700');
+        secM.classList.remove('hidden');
+        secP.classList.add('hidden');
       } else {
-        tabProdukte.className = "flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest bg-white text-emerald-700 shadow-sm transition-all";
-        tabMaerkte.className = "flex-1 py-3 rounded-xl font-black text-xs uppercase tracking-widest text-white transition-all";
-        sectionProdukte.classList.remove('hidden');
-        sectionMaerkte.classList.add('hidden');
-        searchInput.placeholder = "Produkte, Marken suchen...";
+        tabP.classList.add('bg-white', 'text-emerald-700');
+        tabM.classList.remove('bg-white', 'text-emerald-700');
+        secP.classList.remove('hidden');
+        secM.classList.add('hidden');
       }
     }
 
-    // Modal Logic
     function togglePlusMenu() {
-      const menu = document.getElementById('plusMenu');
-      const icon = document.getElementById('plusIcon');
-      if (menu.classList.contains('hidden')) {
-        menu.classList.remove('hidden');
-        icon.style.transform = 'rotate(45deg)';
-      } else {
-        menu.classList.add('hidden');
-        icon.style.transform = 'rotate(0deg)';
-      }
+      document.getElementById('plusMenu').classList.toggle('hidden');
     }
+
+    // Run on load
+    checkUserSession();
   </script>
 </body>
 </html>

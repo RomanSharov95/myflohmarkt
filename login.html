@@ -30,7 +30,7 @@
     </form>
 
     <p class="mt-6 text-[11px] text-gray-500 font-medium">
-      Noch keinen Account? 
+      Noch kein Konto? 
       <a href="register.html" class="text-emerald-600 font-black underline ml-1 uppercase tracking-wider">Registrieren</a>
     </p>
 
@@ -42,37 +42,46 @@
   </div>
 
   <script>
-    // Твои данные Supabase (вставь свои ключи сюда)
-    const SUPABASE_URL = 'ТВОЙ_URL';
-    const SUPABASE_ANON_KEY = 'ТВОЙ_KEY';
+    // Замени на свои реальные ключи из Supabase
+    const SUPABASE_URL = 'https://kzbwncclswagwshyfdlv.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_eqByuGyYPy0qr1z1yO4X6Q_YwrkV5g5';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const form = document.getElementById('loginForm');
     const loginBtn = document.getElementById('loginBtn');
     const inputs = form.querySelectorAll('input[required]');
 
-    // Проверка заполнения полей для активации кнопки
+    // Функция проверки полей для активации кнопки
     function checkInputs() {
       let allFilled = true;
       inputs.forEach(input => {
         if (input.value.trim() === '') allFilled = false;
       });
+
       if (allFilled) {
         loginBtn.disabled = false;
         loginBtn.classList.replace('bg-gray-300', 'bg-emerald-600');
-        loginBtn.classList.add('cursor-pointer');
+        loginBtn.classList.add('shadow-xl', 'shadow-emerald-100', 'cursor-pointer', 'active:scale-[0.98]');
       } else {
         loginBtn.disabled = true;
         loginBtn.classList.replace('bg-emerald-600', 'bg-gray-300');
-        loginBtn.classList.remove('cursor-pointer');
+        loginBtn.classList.remove('shadow-xl', 'shadow-emerald-100', 'cursor-pointer', 'active:scale-[0.98]');
       }
     }
 
-    inputs.forEach(input => input.addEventListener('input', checkInputs));
+    // Слушаем ввод данных
+    inputs.forEach(input => {
+      input.addEventListener('input', checkInputs);
+    });
 
     // Логика входа
     form.onsubmit = async (e) => {
       e.preventDefault();
+      
+      // Визуальный фидбек при нажатии
+      loginBtn.innerText = "Wird geprüft...";
+      loginBtn.classList.add('opacity-70');
+
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
@@ -82,9 +91,11 @@
       });
 
       if (error) {
-        alert("Fehler beim Login: " + error.message);
+        alert("Login fehlgeschlagen: " + error.message);
+        loginBtn.innerText = "Einloggen";
+        loginBtn.classList.remove('opacity-70');
       } else {
-        alert("Erfolgreich eingeloggt!");
+        // Успех! Перенаправляем на главную
         window.location.href = "index.html";
       }
     };
