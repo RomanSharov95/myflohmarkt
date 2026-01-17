@@ -100,38 +100,41 @@
 
   <script>
     // --- SUPABASE CONFIG ---
-    const SUPABASE_URL = 'ТВОЙ_URL';
-    const SUPABASE_ANON_KEY = 'ТВОЙ_KEY';
+    const SUPABASE_URL = 'https://kzbwncclswagwshyfdlv.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_eqByuGyYPy0qr1z1yO4X6Q_YwrkV5g5';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // --- LOGIC: AUTH CHECK ---
     async function checkUserSession() {
-      const { data: { user } } = await supabaseClient.auth.getUser();
-      const authSection = document.getElementById('authSection');
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  const authSection = document.getElementById('authSection');
 
-      if (user) {
-        // Получаем имя из таблицы profiles
-        const { data: profile } = await supabaseClient
-          .from('profiles')
-          .select('full_name')
-          .eq('email', user.email)
-          .single();
+  if (user) {
+    const { data: profile } = await supabaseClient
+      .from('profiles')
+      .select('full_name')
+      .eq('email', user.email)
+      .single();
 
-        let displayName = profile?.full_name || user.email.split('@')[0];
-        
-        // Ограничение до 12 символов
-        if (displayName.length > 12) {
-          displayName = displayName.substring(0, 12) + '...';
-        }
+    let displayName = profile?.full_name || user.email.split('@')[0];
+    if (displayName.length > 12) displayName = displayName.substring(0, 12) + '...';
 
-        authSection.innerHTML = `
-          <a href="profile.html" class="flex items-center space-x-2 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100 transition-transform active:scale-95">
-            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-            <span class="text-[10px] font-black text-emerald-700 uppercase tracking-wider">${displayName}</span>
-          </a>
-        `;
-      }
-    }
+    // Добавляем иконку конверта слева от профиля
+    authSection.innerHTML = `
+      <div class="flex items-center space-x-3">
+        <a href="messages.html" class="relative text-gray-500 hover:text-emerald-600 transition-colors">
+          <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <span class="absolute top-0 right-0 block h-2.5 w-2.5 rounded-full bg-orange-500 ring-2 ring-white"></span>
+        </a>
+        <a href="profile.html" class="flex items-center space-x-2 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100 transition-transform active:scale-95">
+          <span class="text-[10px] font-black text-emerald-700 uppercase tracking-wider">${displayName}</span>
+        </a>
+      </div>
+    `;
+  }
+}
 
     // --- LOGIC: TABS & MENU ---
     function switchTab(type) {
