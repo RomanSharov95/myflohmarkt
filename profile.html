@@ -36,39 +36,43 @@
   </main>
 
   <script>
-    const SUPABASE_URL = 'ТВОЙ_URL';
-    const SUPABASE_ANON_KEY = 'ТВОЙ_KEY';
+    const SUPABASE_URL = 'https://kzbwncclswagwshyfdlv.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_eqByuGyYPy0qr1z1yO4X6Q_YwrkV5g5';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    async function loadProfile() {
-      const { data: { user } } = await supabaseClient.auth.getUser();
-      if (!user) { window.location.href = "login.html"; return; }
+    async function displayProfile() {
+        const { data: { user } } = await supabaseClient.auth.getUser();
 
-      const { data: profile } = await supabaseClient
-        .from('profiles')
-        .select('full_name')
-        .eq('email', user.email)
-        .single();
+        if (!user) {
+            window.location.href = "login.html";
+            return;
+        }
 
-      document.getElementById('userName').innerText = profile?.full_name || "User";
-      document.getElementById('userEmail').innerText = user.email;
-    }
+        // Получаем имя из базы данных
+        const { data: profile } = await supabaseClient
+            .from('profiles')
+            .select('full_name')
+            .eq('email', user.email)
+            .single();
 
-    async function updatePassword() {
-      const newPassword = document.getElementById('newPassword').value;
-      if (newPassword.length < 6) { alert("Passwort muss mindestens 6 Zeichen haben!"); return; }
-
-      const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
-      if (error) { alert("Fehler: " + error.message); }
-      else { alert("Passwort erfolgreich aktualisiert!"); document.getElementById('newPassword').value = ""; }
+        // Отображаем имя и почту
+        document.getElementById('userName').innerText = profile?.full_name || "Пользователь";
+        document.getElementById('userEmail').innerText = user.email;
     }
 
     async function logout() {
-      await supabaseClient.auth.signOut();
-      window.location.href = "index.html"; // Возврат на главную в изначальное состояние
+        // 1. Команда базе данных "завершить сессию"
+        const { error } = await supabaseClient.auth.signOut();
+        
+        if (error) {
+            alert("Fehler beim Ausloggen");
+        } else {
+            // 2. Очистка локальных данных и возврат на главную
+            window.location.href = "index.html";
+        }
     }
 
-    loadProfile();
-  </script>
+    displayProfile();
+</script>
 </body>
 </html>
